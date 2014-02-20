@@ -1,0 +1,5 @@
+# Compressed folders
+*.zip
+
+# Python cached files
+*.py[cod]
