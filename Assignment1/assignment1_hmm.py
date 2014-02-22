@@ -27,17 +27,20 @@ def get_emission(word, tag, word_tag_counts, tag_counts):
 
 def replace_infrequent(word_tag_count):
     """ Finds the least frequent words where total count < 5, and replaces those words in the training data with the symbol _RARE_. Saves the edited training file as gene.train2. """
-    infrequent_words = [] # a list to store the infrequent words
+    # infrequent_words = [] # a list to store the infrequent words
+    # implement this as dict to speed up the lookup - 2/21/14
+    infrequent_words = {}
     for word, tag_dict in word_tag_count.iteritems():
-        total_word_count = sum[(x for x in tag_dict.values()])
+        total_word_count = sum([x for x in tag_dict.values()])
         if total_word_count < 5:
-            infrequent_words.append(word)
+            infrequent_words[word] = None
+    print len(infrequent_words)
     f = open('gene.train')
     g = open('gene.train2', 'w')
     for line in f:
         parts = line.split()
         # parts[0] contains the word of the word-count pair (if the line is a word-count pair)
-        if parts[0] in infrequent_words:
+        if len(parts) > 1 and parts[0] in infrequent_words:
             new_line = '_RARE_ ' + parts[1]
         else:
             new_line = line
