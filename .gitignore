@@ -3,3 +3,7 @@
 
 # Python cached files
 *.py[cod]
+
+# Swap files from VIM
+*.swp
+*.swo
