@@ -1,3 +1,4 @@
-Assignments for Coursera's NLP class by Michael Collins:
+Coursera NLP Assignments and Solutions
+=========================================
 
 https://www.coursera.org/course/nlangp
