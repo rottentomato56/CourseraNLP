@@ -8,7 +8,7 @@ def emission_counts(counts_file):
     word_tag_counts = {}
     tag_counts = defaultdict(int) # This will store the cumulative tag counts
     for line in counts_file:
-        parts = line.strip()
+        parts = line.strip().split()
         if parts[1] == 'WORDTAG':
             word_tag_count = parts[0]
             tag = parts[2]
@@ -25,9 +25,28 @@ def get_emission(word, tag, word_tag_counts, tag_counts):
     total_tag_count = tag_counts[tag]
     return word_tag_count * 1.0 / total_tag_count
 
+def replace_infrequent(word_tag_count):
+    """ Finds the least frequent words where total count < 5, and replaces those words in the training data with the symbol _RARE_. Saves the edited training file as gene.train2. """
+    infrequent_words = [] # a list to store the infrequent words
+    for word, tag_dict in word_tag_count.iteritems():
+        total_word_count = sum[(x for x in tag_dict.values()])
+        if total_word_count < 5:
+            infrequent_words.append(word)
+    f = open('gene.train')
+    g = open('gene.train2', 'w')
+    for line in f:
+        parts = line.split()
+        # parts[0] contains the word of the word-count pair (if the line is a word-count pair)
+        if parts[0] in infrequent_words:
+            new_line = '_RARE_ ' + parts[1]
+        else:
+            new_line = line
+        g.write(new_line)
+    g.close()
+    f.close()
 
 
-if __name___ == '__main__':
+if __name__ == '__main__':
     counts_file = sys.argv[1]
-    emission_counts, tag_counts = emission_counts(sys.argv[1])
+    word_tag_counts, tag_counts = emission_counts(sys.argv[1])
 
